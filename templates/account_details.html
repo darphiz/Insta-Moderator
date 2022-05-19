@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container my-3">
+        <div class="row">
+        <div class="col-md-6">
+            <h4>Work on > {{account.username}}</h4>
+            <div class="mt-4">
+                <ul class="journey">
+                    <li id="start" onclick="startJourney()" 
+                    {% if process.stage == 0 or not process %}
+                    class="activate"
+                    {% endif %}
+                    >Start Journey</li>
+                    <li id="recent" onclick="getFollowers()"
+                    {% if process.stage == 1 %}
+                    class="activate"
+                    {% elif process.stage == 2 %}
+                    class="running"
+                    {% endif %}
+                    >Get Recent Followers</li>
+                    <li id="sanitize" onclick="getComments()"
+                    {% if process.stage == 3 %}
+                        class="activate"
+                        {% elif process.stage == 4 %}
+                        class="running"
+                    {% endif %}
+                    >Sanitize followers posts</li>
+                    <li id="ban" onclick="banOffenders();"
+                    {% if process.stage == 5 %}
+                        class="activate"
+                        {% elif process.stage == 6 %}
+                        class="running"
+                    {% endif %}
+                    >Ban Offenders</li>
+                    
+                    <li id="done" onclick="done()"
+                    {% if process.stage == 7 %}
+                    class="activate"
+                    {% endif %}
+                    >Done</li>
+                    {% if process.stage > 0 %}
+                    <li id="done" onclick="done()"
+                      class="activate-0"
+                    >Force Clear</li>
+                    {% endif %}
+
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>Logs</h4>
+            <div class="log-container mt-4">
+                <ul id="logs" class="logs">
+                    {% for log in logs %}
+                        <li>{{log}}</li>
+                        {% empty %}
+                        <li>Click on 'start journey' to begin...</li>
+                    {% endfor %}
+                </ul>
+                
+            </div>
+            
+            <button onclick="stopScroll();" class="btn btn-primary mt-2 rounded">
+              <small>
+              Stop Autoscroll
+            </small>
+            </button>
+            <button onclick="attachNew();" class="btn btn-primary mt-2 rounded">
+              <small>
+                Give Security Input
+            </button>
+        </div>
+    </div>
+    <div id="connect-modal" onclick="close();" class="the-modal-dialog">
+      <div  class="the-modal-content p-4">    
+              <center>
+                  <h4 class="the-modal-title">Update Security Code</h4>
+              </center>
+              <div class="p-2">
+                  <input type="text" class="form-control my-3 gen-radius p-3" id="id_security_code" name="security_code" required placeholder="Enter the code here">
+                  <button onclick="updateCode()" class="gen-radius my-3 btn btn-primary">Connect</button>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    {{ account.id|json_script:'user_id' }}
+    <script>
+      const id  = JSON.parse(document.getElementById('user_id').textContent);
+
+      const attachNew = () =>{
+        const modal = document.getElementById('connect-modal');
+        modal.style.display = 'block';
+      };
+
+      window.onclick = function(event) {
+        const modal = document.getElementById('connect-modal');
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      const closeModal = () =>{
+        const modal = document.getElementById('connect-modal');
+        modal.style.display = 'none';
+      };
+
+      const updateCode = () =>{
+        const security_code = document.getElementById('id_security_code').value;
+        
+        $.post('/api/save_insta_security_code/', {
+          account_id: id,
+          security_code: security_code,
+          }, (data, status) => {
+  
+            if (status == 'success') {
+              if(data.message === "success") {
+                  alert("Security input updated")
+                  closeModal();
+              }else{
+                alert(data.message);
+              }
+            }else{
+              alert("an error occurred...")
+            }
+          });
+        };
+      
+
+    const startJourney = () => {
+          $.post('/api/start_journey/', {
+            account_id: id
+          }, (data, status) => {
+            if (status == 'success') {
+              if(data.message === "success") {
+                    $('#start').toggleClass('activate');
+                    $('#recent').toggleClass('activate');
+              }else{
+                alert(data.message);
+              }
+            }
+          })
+          
+        };
+        
+        const getFollowers = () => {
+          $.post('/api/get_followers/', {
+            account_id: id
+          }, (data, status) => {
+            if (status == 'success') {
+              if(data.message === "success") {
+                    $('#recent').toggleClass('activate');
+                    $('#recent').toggleClass('running');
+              }else{
+                alert(data.message);
+              }
+            }
+          })
+          
+        };
+
+        const getComments = () => {
+          $.post('/api/get_comments/', {
+            account_id: id
+          }, (data, status) => {
+            if (status == 'success') {
+              if(data.message === "success") {
+                    $('#sanitize').toggleClass('activate');
+                    $('#sanitize').toggleClass('running');
+              }else{
+                alert(data.message);
+              }
+            }
+          })
+          
+        };
+
+        const banOffenders = () => {
+          $.post('/api/ban_offenders/', {
+            account_id: id
+          }, (data, status) => {
+            if (status == 'success') {
+              if(data.message === "success") {
+                    $('#ban').toggleClass('activate');
+                    $('#ban').toggleClass('running');
+              }else{
+                alert(data.message);
+              }
+            }
+          })
+          
+        };
+
+        const done = () => {
+          $.post('/api/delete_process/', {
+            account_id: id
+          }, (data, status) => {
+            if (status == 'success') {
+              if(data.message === "success") {
+                    $('#done').toggleClass('activate');
+                    $('#done').toggleClass('running');
+                    window.location.reload();
+              }else{
+                alert(data.message);
+              }
+            }
+          })
+          
+        };
+        //polling log at interval of 1 second
+        const fetchLogs = () =>{
+            $.post('/api/continuos_log_poll/', {
+                account_id: id
+        }, (data, status) => {
+            if (status == 'success') {
+                //remove all logs
+                $('#logs').empty();
+                console.log(data.logs.length)
+                if(data.logs.length >= 1){
+                  data.logs.forEach(log => {
+                    $('#logs').append(`<li>${log}</li>`);
+                  });  
+                }else{
+                  $('#logs').append(`<li>No logs yet...Start a journey!</li>`);
+                }
+                
+            }
+        })
+        }
+
+    setInterval(fetchLogs, 3000);
+    const bottomScroll = () =>{
+      $('#logs').stop().animate({
+        scrollTop: $('#logs')[0].scrollHeight
+      }, 800);
+      
+    };
+    const scrolling = setInterval(bottomScroll, 500);
+    
+    const stopScroll = () =>{
+      $('#logs').stop();
+      clearInterval(scrolling);
+    
+    };
+
+    </script>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main">
+<div class="row mt-4 mx-4">
+    <div class="col-md-6">
+        <h3>Welcome, {{request.user.username}}</h3>
+        <button onclick="attachNew();" class="d-flex gap-2 my-4 connect align-items-center bg-white gen-radius">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIUAAACFCAMAAABCBMsOAAAAbFBMVEX///8AAAD29vaWlpbBwcFZWVns7Oytra25ubn7+/vp6enx8fFHR0fU1NS+vr6NjY3a2trLy8umpqZNTU1zc3Pg4OBubm58fHxgYGCEhIQcHBwODg5oaGienp4iIiKzs7MxMTEqKio+Pj4WFhYf8rFBAAAGi0lEQVR4nO2ba7uyKhCG07TylKe0k5XW//+Pu7X3CwwwICCuD/t6n49JdofMMAfcbP7qr2yVdNVre77EC9WXTd1ljgzFNb4F3pT3r9Aaodv6A6C6HK0YqssKDD+a9sYTsjuvxPCjPDKDeK3I8KPeYDqyYWWIr+o5iC5fHyIIGj1Edf8NiCA46yDq32H46qSGKJ7I+DEuj126c1Oa1s2APuSrCiJBXOUQpfpnaKCkeCB3Vq2NVhx4f7h6f0lRLGEU6EDJZ1/tHb9G9Vu4/RP7i4UwKMdZ3RWWBktDQNXakqNEE5S9l+C39ytAbDYpv/Te4vWEnwq7Ldhcu1j7Mwfu6msliO/i4P5tLlzlGB+rQXxng3MdvAVwBqLxrg4Kvy4UmnyktgHoKz4+3UR6/VmQ+bXDf2vcwcFwmgyDIROFPb3rwHwUXBrQWDvweewRYgL3vdG/Dd0G9FzQWfhzmSG/mY70SYPPocsAj2rwBrG5BrzoqgeT8QQLA8SaszGhsbqPQEGnOcnlz74a6YeTPwN5iBBBSS6BuT/Q8QkycLnkEOtJLqXsM7ZhAQqPZipBBAG5FLJdjYVcIRvn0WNpKMDC3SIUd8tfCrs6OkZ1tUOu6SgaLcXFHCCrG7gFjteo4wfIkSZzDmzfwihMF2dYnMQw8rv42j2ck700gO3VOy2F4Z6+V+aRZ5Y4pGJ28wGTpaUwCvSaQKdTpxq3BfdYSlFIaYv4lx/E0Pg6SJ/4oxDDeUwtmQ5YEmohxDKKnWFhgQSue7I27kJCuISiGPkfm+KhbJpme7qIFkNuHh76uI0Hqb63gKLgqhv3c80MIisanhCELwlyK3cKLkR+y9lCxa1GfQztTFEB+x8P6JCuBxhaD+hKAeO3XllROAIMnHQZBbA63YylYJ126mGOFGBX0MfH4YkOnHxTpNQ8bnORacKiWPW25EbB/uB8Og+CW2VRzImCxe4m6XxGXYcyr3CioBFLbwABoVVryIWCZpB3LLRDRP2Xyne5UNCbzhSwkTsqPIsDRUYM5G0cotOUSGEmDhTRzC0RpdOfryhKAA4UdHewyFboQ8RXkj1FRpyyTQ20IrfEdxN7ikJ/Q1wh8Rm4ldhT0H3S0Ez/E0kC8YVhT0EC3psNBM0D3ii7PQXZnSzSxw17jvfKDwV5wna1DZoEok7cnkJ7US3yNTQScKewMZH1KCwbBeRraHnIncKyU+B5Lkh52q5VQItlnlYnceDKFiiq1DMFiTnFnopeZCN+ovmAPQXxgnalN1JZzdE4x56ChheoF1SJhAN4AGxP0ZHlaRrvcffEPa49BW19txYUtB2IR+EOFLRSq0k8RdEEDY/PHCho3GRuq/QrivjMgYIWDe7Gk0EzfEV534GCxfWmTU4aJKqs24WCtS4MW0m0Jqry+i4UrMp5N0oGaC9oVIWqThSspm2SLrP2sdLDOFGAJth83MeOW43KmXOjSFj1e85cQYtYvYrcKOC9r1gZlapm3XJNLudIARuTgyY9AlW4XEPrSsH1GVStxhT0h2+6k17OFAks7MbYI99xh620BUlnCtgF/epS8waQdCVXj9fnDe4Um5BvC37OexL37KKt0EKaSRsWUKCdos84yR9Oc2HZIoqZzh1RPHv+bxmF1C7CZJC4LKTAurW8LiZnMbUURvFtesVOo5KHYbb3aykMk8D0oTgfPBjGH+wXMQrzKl5dSo32k/nB91RLYZMEJllU9pc2f+dtPJz3nc3RjUhLEWi+iSvMsizUbrKYtggFOBGz/KyxkVjTh61EQLHO6VJRGTMyZpWAwu95RpVAfxgUiECr1Ou5Z5XYA4G7Hvh0zROmRLRt8d0LwbYHorn8FyYDbIkTMC/TvrQnAccLixEhdMjWxm8rGBdyGxcMlDwe5UMFj7TyRaqX8op/cYd1uFXYwb169PamBCYuaNzy107wmk39ylb8mwDC/624i2Z9bBfxLyxIgQT/gtdajvzI/Ypcrev46+0qa0OI4JGYSnjtb/RvKeJrLE8kjMgmfoy4fhdLeqUH7bfIL5sdPbrRqhfvrjAB+eh03vhZHmE1SIfDn6q/iL2Ven4tBilK5DAm3mb9V4r3MeOyeR2ctN/2igxKk7j8xmuhsxDfCHStV4V53ecOv5ucZV2q93y+EWlSYT86mTiA3bqLYzJtUdcrvja8tfCEx3VW6VjaOZ+kOhuUjqz0bI9WR2r+qG56ye+6qi0PLghEaVFHy1TX1a+knf8P/QMBMk/E7Lkz9gAAAABJRU5ErkJggg==" class="insta-icon" alt="instagram icon">
+            <span class="fw-bold">Connect Instagram Account</span>
+        </button>  
+        <br />
+        
+        <div class="mt-4">
+            <h4>Accounts</h4>
+            <div class="container">
+            <ul class="acct">
+                {% for acct in attached_accounts %}
+                <li class="d-flex align-items-center">
+                    <a class="text-decoration-none text-black" href="{% url 'account_details_page' acct.id %}">
+                        {{acct.username}}
+                    </a>
+                    <a href="{% url 'delete_account' acct.id %}" class="ms-auto text-decoration-none text-danger font-small">Delete</a>
+                </li>
+                {% empty %}
+                <li>No accounts attached yet</li>
+                {% endfor %}
+            </ul>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        
+        <h3>Logs</h3>
+        <div class="log-container mt-4">
+            <ul id="logs" class="logs">
+              <li>Your App logs will appear here...</li>
+            </ul>
+        </div>
+
+</div>
+
+    <div id="connect-modal" onclick="close();" class="the-modal-dialog">
+        <div  class="the-modal-content p-4">    
+                <center>
+                    <h4 class="the-modal-title">Connect Instagram</h4>
+                </center>
+                <div class="p-2">
+                    <input type="text" class="form-control my-3 gen-radius p-3" id="id_username" name="username" required placeholder="Enter your Username">
+                    <input type="password" class="form-control my-3 gen-radius p-3" id="id_access_id" name="access_id" required placeholder="Enter your password">
+                    <input type="number" class="form-control my-3 gen-radius p-3" id="id_max" name="max_follower" required placeholder="Number of recent followers to scrape">
+                    <input type="text" class="form-control my-3 gen-radius p-3" id="id_phrase" name="phrase" required placeholder="Enter the phrase to ban">
+                    <label for="id_two_factor">Has Two Factor</label>
+                    <input type="checkbox" class="my-3 p-3" id="id_two_factor" name="two_factor">
+                    <br />
+                    <button onclick="connectInsta()" class="gen-radius my-3 btn btn-primary">Connect</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    const attachNew = () =>{
+        const modal = document.getElementById('connect-modal');
+        modal.style.display = 'block';
+    };
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('connect-modal');
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+    const connectInsta = () =>{
+        const username = document.getElementById('id_username').value;
+        const access_id = document.getElementById('id_access_id').value;
+        const max = document.getElementById('id_max').value;
+        const phrase = document.getElementById('id_phrase').value;
+        const two_factor = document.getElementById('id_two_factor').checked;
+        const data = {
+            'username': username,
+            'access_id': access_id,
+            'max': max,
+            'phrase': phrase,
+            'two_factor': two_factor
+        };
+        fetch('/api/add_insta_account/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+
+        }).then((result)=>{
+            if(result.status == 200){
+                window.location.reload();
+                }
+            else{
+                alert("Invalid, Check if you have already added this account. Another reason may be the credentials you submitted.")
+            }
+
+            }
+        );
+    };
+</script>
+  
+{% endblock %}

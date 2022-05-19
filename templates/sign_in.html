@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+    
+    {% block content %}
+    <div class="container">
+        <div class="form-container">
+        <form action="{% url 'sign_in' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <center>
+                <p class="log-title">Login</p>
+            </center>
+            <br />
+
+            <div class="form-group mb-3">
+                <input type="text" class="form-control gen-radius p-3" id="id_username" name="username" required placeholder="Username">
+                {% if error %}
+                <span>{{error}}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group mb-3">
+                <input type="password" class="form-control gen-radius p-3" id="id_password" name="password" required placeholder="Access ID">
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+
+                <a href="{% url 'register' %}">Click here to create an account</a>
+            </div>
+    </form>
+    </div>
+    {% endblock %}

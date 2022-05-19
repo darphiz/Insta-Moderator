@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+    
+    {% block content %}
+    <div class="container">
+        <div class="form-container">
+        <form action="{% url 'register' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <center>
+                <p class="log-title">Hi there! Lets set you up...</p>
+            </center>
+            <br />
+
+            <div class="form-group mb-3">
+                <input type="text" class="form-control gen-radius p-3" id="id_username" name="username" required placeholder="Username">
+                <span>{{form.username.errors}}</span>
+            </div>
+
+            <div class="form-group mb-3">
+                <input type="password" class="form-control gen-radius p-3" id="id_password" name="password" required placeholder="Access ID">
+            </div>
+            <button type="submit" class="btn btn-primary">Lets Go</button>
+            <a href="{% url 'sign_in' %}">I already have an account</a>
+            </div>
+    </form>
+    </div>
+    {% endblock %}
