@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-u!axk_b#8&1pi*n0s3=vyt&6&z-l8-@$d+^=)svbv5ug_er=h2
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://instabuddyapp.herokuapp.com/',]
+CSRF_TRUSTED_ORIGINS = ['https://instabuddyapp.herokuapp.com/',"https://instabuddytools.herokuapp.com/",]
 
 # Application definition
 
